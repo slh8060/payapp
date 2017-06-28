@@ -18,10 +18,10 @@ export default class Login extends Component {
                     actions:[
                         NavigationActions.navigate({routeName:'Login'})
                     ]
-                })
+                });
                 this.props.navigation.dispatch(resetAction);
             })
-        },3000)
+        },500)
 
     };
 

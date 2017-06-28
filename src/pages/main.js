@@ -35,7 +35,7 @@ const MainScreen = TabNavigator({
                 borderTopWidth:1,
                 borderTopColor:'#e0e0e0',
                 paddingTop:5,
-                paddingBottom:5
+                paddingBottom:5,
             },
             activeTintColor:'#fe991b',
             inactiveTintColor:'#999',

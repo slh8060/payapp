@@ -2,13 +2,57 @@
  * Created by apple on 2017/6/21.
  */
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, TextInput,TouchableHighlight} from 'react-native';
+import {View, Text, StyleSheet, Image, TextInput, TouchableHighlight, TouchableOpacity} from 'react-native';
+import Toast from 'react-native-root-toast';
 
 export default class Login extends Component {
     static navigationOptions = {
-        header:null,
-        title:'login'
+        header: null,
+        title: 'login'
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            userName: '',
+            userPwd: '',
+            showIcon: false
+        }
+    }
+
+    delName = () => {
+        this.setState((state) => {
+            return {
+                userName: ''
+            }
+        })
+    };
+    delPwd = () => {
+        this.setState((state) => {
+            return {
+                userPwd: ''
+            }
+        })
+    };
+    showDelIcon = () => {
+        var userName = this.state.userName;
+        if (userName != '') {
+            this.setState((state) => {
+                return {
+                    showIcon:true
+                }
+            })
+        } else {
+            this.setState((state) => {
+                return {
+                    showIcon:false
+                }
+            })
+
+        }
+        Toast.show(this.state.userName)
+    }
+
     render() {
         const {navigate} = this.props.navigation;
         return (
@@ -24,34 +68,47 @@ export default class Login extends Component {
                     <View style={[styles.row]}>
                         <Image style={[styles.loginIcon]}
                                source={require('../../images/login_icon_user.png')}/>
-                        <TextInput style={[styles.loginIpt]}
-                                   placeholder="手机号／邮箱"/>
-                        <Image style={[styles.loginDelIcon]}
-                               source={require('../../images/login_del.png')}
+                        <TextInput onChangeText={(text) => this.setState({userName:text})}
+                                   style={[styles.loginIpt]}
+                                   placeholder="手机号／邮箱"
+                                   onChange={this.showDelIcon}
                         />
+                        <TouchableOpacity onPress={this.delName}>
+                            <Image style={[styles.loginDelIcon,this.state.showIcon ? styles.display : styles.hidden]}
+                                   source={require('../../images/login_del.png')}
+                            />
+                        </TouchableOpacity>
+
+
                     </View>
                     <View style={[styles.row]}>
                         <Image style={[styles.loginIcon]}
                                source={require('../../images/login_icon_password.png')}/>
-                        <TextInput style={[styles.loginIpt]}
+                        <TextInput onChangeText={(text) => this.setState({userPwd: text})}
+                                   style={[styles.loginIpt]}
                                    placeholder="请输入密码"
                                    password={true}
+                                   value={this.state.userPwd}
                         />
-                        <Image style={[styles.loginDelIcon]}
-                               source={require('../../images/login_del.png')}
-                        />
+                        <TouchableOpacity
+                            onPress={this.delPwd}>
+                            <Image style={[styles.loginDelIcon]}
+                                   source={require('../../images/login_del.png')}
+                            />
+                        </TouchableOpacity>
+
                     </View>
                     <View style={[styles.forgetPwd]}>
                         <Text style={styles.fogpwd}>忘记密码？</Text>
                     </View>
                     <TouchableHighlight onPress={() => navigate('Main')}
                                         title="Home"
-                        style={styles.loginWrap}>
+                                        style={styles.loginWrap}>
                         <Text style={styles.logbtn}>登 录</Text>
                     </TouchableHighlight>
                     <TouchableHighlight onPress={() => navigate('Regist')}
-                          title="Regist"
-                        style={styles.registWrap}>
+                                        title="Regist"
+                                        style={styles.registWrap}>
                         <Text style={styles.regbtn}>注 册</Text>
                     </TouchableHighlight>
 
@@ -62,12 +119,11 @@ export default class Login extends Component {
 }
 
 
-
 const styles = StyleSheet.create({
     loginContainer: {
-        width:'100%',
-        height:'100%',
-        backgroundColor:'#fff'
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#fff'
     },
     loginHeader: {
         height: 255,
@@ -110,9 +166,9 @@ const styles = StyleSheet.create({
     loginDelIcon: {
         width: 17.5,
         height: 17,
-        position: 'absolute',
-        top: 10,
-        right: 0
+        top: -23,
+        right: 0,
+        position: 'absolute'
     },
     forgetPwd: {
         width: 285,
@@ -151,6 +207,12 @@ const styles = StyleSheet.create({
     regbtn: {
         fontSize: 16,
         color: '#fe991b'
+    },
+    hidden: {
+        display: 'none'
+    },
+    display: {
+        display: 'flex'
     }
 
 
